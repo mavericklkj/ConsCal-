@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tiered Trading Calculator</title>
+  <title>TIERCALC — Gold Edition</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0a0c0f;
-      --surface: #111318;
-      --card: #161b22;
-      --border: #1f2633;
-      --accent: #00e5a0;
-      --accent2: #0099ff;
-      --red: #ff4d6a;
-      --gold: #f0c040;
-      --text: #e8edf5;
-      --muted: #5a6478;
-      --label: #8a97b0;
+      --bg: #07070a;
+      --surface: #0e0e11;
+      --card: #131317;
+      --border: #26241d;
+      --gold: #d4af37;
+      --gold-bright: #ffd76e;
+      --gold-deep: #8a6d1f;
+      --red: #e0484d;
+      --text: #f2ecdc;
+      --muted: #6b6355;
+      --label: #a2977f;
     }
 
     body {
@@ -30,26 +30,31 @@
       display: flex;
       align-items: flex-start;
       justify-content: center;
-      padding: 24px 16px 48px;
+      padding: 28px 16px 56px;
       overflow-x: hidden;
     }
 
     body::before {
       content: '';
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
       background:
-        radial-gradient(ellipse 60% 50% at 15% 10%, rgba(0,229,160,0.06) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 40% at 85% 90%, rgba(0,153,255,0.06) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
+        radial-gradient(ellipse 65% 45% at 20% 0%, rgba(212,175,55,0.10) 0%, transparent 70%),
+        radial-gradient(ellipse 55% 45% at 85% 100%, rgba(212,175,55,0.05) 0%, transparent 70%);
+    }
+    body::after {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.35;
+      background-image:
+        linear-gradient(rgba(212,175,55,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212,175,55,0.035) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 0%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 0%, transparent 75%);
     }
 
     .wrapper {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 480px;
+      position: relative; z-index: 1;
+      width: 100%; max-width: 480px;
       animation: fadeUp 0.5s ease both;
     }
 
@@ -61,14 +66,19 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 10px; font-weight: 600;
       letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--accent);
-      background: rgba(0,229,160,0.08);
-      border: 1px solid rgba(0,229,160,0.2);
+      color: var(--gold-bright);
+      background: rgba(212,175,55,0.07);
+      border: 1px solid rgba(212,175,55,0.25);
       padding: 4px 12px; border-radius: 2px; margin-bottom: 16px;
     }
 
-    h1 { font-size: 42px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
-    h1 span { color: var(--accent); }
+    h1 {
+      font-size: 44px; font-weight: 800; letter-spacing: -0.03em; line-height: 1;
+      background: linear-gradient(180deg, #fff6d8 0%, var(--gold) 55%, var(--gold-deep) 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 14px rgba(212,175,55,0.28));
+    }
 
     .subtitle {
       margin-top: 10px; font-size: 13px; color: var(--muted);
@@ -77,34 +87,29 @@
 
     /* ── CARD ── */
     .card {
-      background: var(--card);
+      background: linear-gradient(180deg, #16161a 0%, var(--card) 100%);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 24px 24px 28px;
       position: relative; overflow: hidden;
       margin-bottom: 14px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.02);
     }
-
     .card::before {
       content: '';
       position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(0,229,160,0.3), transparent);
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.55), transparent);
     }
 
-    /* ── SECTION LABEL ── */
     .sec-label {
       font-size: 10px; font-weight: 700;
-      letter-spacing: 0.15em; text-transform: uppercase;
+      letter-spacing: 0.18em; text-transform: uppercase;
       color: var(--label); margin-bottom: 14px;
     }
 
-    /* ── DIVIDER ── */
-    .divider {
-      height: 1px; background: var(--border); margin: 22px 0; position: relative;
-    }
+    .divider { height: 1px; background: var(--border); margin: 22px 0; position: relative; }
     .divider span {
-      position: absolute; left: 50%; top: 50%;
-      transform: translate(-50%,-50%);
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
       background: var(--card); padding: 0 10px;
       font-size: 10px; font-family: 'JetBrains Mono', monospace;
       letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase;
@@ -112,42 +117,54 @@
 
     /* ── TIER DISPLAY ── */
     .tier-display {
-      background: var(--surface);
-      border: 1px solid rgba(0,229,160,0.25);
-      border-radius: 10px; padding: 18px 16px; text-align: center;
+      background: radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.09), transparent 70%), var(--surface);
+      border: 1px solid rgba(212,175,55,0.28);
+      border-radius: 12px; padding: 20px 16px; text-align: center;
       margin-bottom: 16px; position: relative; overflow: hidden;
-      animation: pulse-glow 3s ease-in-out infinite;
-      transition: border-color 0.4s;
+      animation: pulse-glow 3.4s ease-in-out infinite;
     }
     .tier-display::before {
       content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(0,229,160,0.5), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255,215,110,0.7), transparent);
     }
+    .tier-display.maxed { border-color: rgba(255,215,110,0.6); }
     .tier-display-label {
       font-size: 9px; font-weight: 700; letter-spacing: 0.2em;
       text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
     }
     .tier-display-value {
-      font-family: 'JetBrains Mono', monospace; font-size: 44px;
-      font-weight: 600; color: var(--accent);
-      letter-spacing: -0.02em; line-height: 1;
+      font-family: 'JetBrains Mono', monospace; font-size: 48px;
+      font-weight: 600; letter-spacing: -0.02em; line-height: 1;
+      background: linear-gradient(180deg, #fff3cf, var(--gold));
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 18px rgba(212,175,55,0.35));
     }
     .tier-display-sub {
       font-size: 11px; color: var(--muted);
-      font-family: 'JetBrains Mono', monospace; margin-top: 6px;
+      font-family: 'JetBrains Mono', monospace; margin-top: 8px;
     }
 
-    /* ── STATS GRID ── */
-    .stats-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px;
+    /* ── TIER PIPS ── */
+    .tier-pips { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
+    .pip-dot {
+      width: 26px; height: 4px; border-radius: 99px;
+      background: #262218; transition: all 0.35s;
     }
+    .pip-dot.filled {
+      background: linear-gradient(90deg, var(--gold-deep), var(--gold-bright));
+      box-shadow: 0 0 8px rgba(212,175,55,0.5);
+    }
+
+    /* ── STATS ── */
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
     .stat-item {
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 8px; padding: 11px 13px;
+      transition: border-color 0.2s;
     }
+    .stat-item:hover { border-color: rgba(212,175,55,0.28); }
     .stat-item.wide {
-      grid-column: span 2;
-      display: grid; grid-template-columns: 1fr 1fr;
+      grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr;
       gap: 0; padding: 0; background: transparent; border: none;
     }
     .stat-item.wide .stat-inner {
@@ -164,44 +181,32 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 17px; font-weight: 600; color: var(--text);
     }
-    .stat-value.green  { color: var(--accent); }
-    .stat-value.blue   { color: var(--accent2); }
-    .stat-value.red    { color: var(--red); }
     .stat-value.gold   { color: var(--gold); }
+    .stat-value.bright { color: var(--gold-bright); }
+    .stat-value.red    { color: var(--red); }
 
-    /* WR bar */
     .wr-bar-wrap { margin-top: 6px; }
-    .wr-track {
-      height: 3px; background: rgba(255,77,106,0.25); border-radius: 99px; overflow: hidden;
-    }
+    .wr-track { height: 3px; background: rgba(224,72,77,0.22); border-radius: 99px; overflow: hidden; }
     .wr-fill {
       height: 100%; border-radius: 99px;
-      background: linear-gradient(90deg, rgba(0,229,160,0.5), var(--accent));
+      background: linear-gradient(90deg, var(--gold-deep), var(--gold-bright));
       transition: width 0.5s cubic-bezier(0.34,1.56,0.64,1);
     }
 
-    /* ── PROGRESS BAR ── */
+    /* ── PROGRESS ── */
     .tp-progress { margin-bottom: 16px; }
-    .tp-progress-header {
-      display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px;
-    }
-    .tp-progress-label {
-      font-size: 9px; font-weight: 700; letter-spacing: 0.15em;
-      text-transform: uppercase; color: var(--muted);
-    }
-    .tp-progress-val {
-      font-family: 'JetBrains Mono', monospace; font-size: 11px;
-      color: var(--accent); font-weight: 600;
-    }
+    .tp-progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; }
+    .tp-progress-label { font-size: 9px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+    .tp-progress-val { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--gold); font-weight: 600; }
     .progress-track {
-      height: 4px; background: var(--surface); border-radius: 99px;
+      height: 5px; background: var(--surface); border-radius: 99px;
       overflow: hidden; border: 1px solid var(--border);
     }
     .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, rgba(0,229,160,0.5), var(--accent));
-      border-radius: 99px;
-      transition: width 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      height: 100%; border-radius: 99px;
+      background: linear-gradient(90deg, var(--gold-deep), var(--gold-bright));
+      box-shadow: 0 0 10px rgba(212,175,55,0.5);
+      transition: width 0.45s cubic-bezier(0.34,1.56,0.64,1);
     }
 
     /* ── LAST ACTION ── */
@@ -213,18 +218,15 @@
       color: var(--muted); letter-spacing: 0.04em;
       min-height: 40px; transition: all 0.3s;
     }
-    .last-action .la-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--muted); flex-shrink: 0; transition: background 0.3s;
-    }
-    .last-action.is-tp { border-color: rgba(0,229,160,0.3); background: rgba(0,229,160,0.04); }
-    .last-action.is-tp .la-dot { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
-    .last-action.is-tp .la-text { color: var(--accent); }
-    .last-action.is-sl { border-color: rgba(255,77,106,0.3); background: rgba(255,77,106,0.04); }
-    .last-action.is-sl .la-dot { background: var(--red); box-shadow: 0 0 6px var(--red); }
+    .last-action .la-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); flex-shrink: 0; transition: background 0.3s; }
+    .last-action.is-tp { border-color: rgba(212,175,55,0.35); background: rgba(212,175,55,0.05); }
+    .last-action.is-tp .la-dot { background: var(--gold-bright); box-shadow: 0 0 7px var(--gold); }
+    .last-action.is-tp .la-text { color: var(--gold-bright); }
+    .last-action.is-sl { border-color: rgba(224,72,77,0.3); background: rgba(224,72,77,0.04); }
+    .last-action.is-sl .la-dot { background: var(--red); box-shadow: 0 0 7px var(--red); }
     .last-action.is-sl .la-text { color: var(--red); }
 
-    /* ── ACTION BUTTONS ── */
+    /* ── BUTTONS ── */
     .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
     .action-btn {
       border: none; border-radius: 10px; padding: 16px 12px;
@@ -235,18 +237,14 @@
     }
     .action-btn:active { transform: scale(0.97); }
     .action-btn .btn-icon { font-size: 20px; line-height: 1; }
-    .action-btn .btn-sub {
-      font-size: 10px; font-family: 'JetBrains Mono', monospace;
-      font-weight: 400; opacity: 0.7; letter-spacing: 0.04em;
-    }
+    .action-btn .btn-sub { font-size: 10px; font-family: 'JetBrains Mono', monospace; font-weight: 400; opacity: 0.65; letter-spacing: 0.04em; }
     .btn-tp {
-      background: rgba(0,229,160,0.1); border: 1px solid rgba(0,229,160,0.35); color: var(--accent);
+      background: linear-gradient(180deg, rgba(212,175,55,0.16), rgba(212,175,55,0.07));
+      border: 1px solid rgba(212,175,55,0.4); color: var(--gold-bright);
     }
-    .btn-tp:hover { background: rgba(0,229,160,0.17); border-color: rgba(0,229,160,0.6); box-shadow: 0 0 20px rgba(0,229,160,0.12); }
-    .btn-sl {
-      background: rgba(255,77,106,0.08); border: 1px solid rgba(255,77,106,0.3); color: var(--red);
-    }
-    .btn-sl:hover { background: rgba(255,77,106,0.15); border-color: rgba(255,77,106,0.55); box-shadow: 0 0 20px rgba(255,77,106,0.1); }
+    .btn-tp:hover { background: linear-gradient(180deg, rgba(212,175,55,0.28), rgba(212,175,55,0.12)); border-color: var(--gold); box-shadow: 0 0 26px rgba(212,175,55,0.22); }
+    .btn-sl { background: rgba(224,72,77,0.07); border: 1px solid rgba(224,72,77,0.3); color: var(--red); }
+    .btn-sl:hover { background: rgba(224,72,77,0.14); border-color: rgba(224,72,77,0.6); box-shadow: 0 0 22px rgba(224,72,77,0.12); }
 
     .reset-btn {
       width: 100%; background: transparent; border: 1px solid var(--border);
@@ -255,19 +253,12 @@
       letter-spacing: 0.12em; text-transform: uppercase;
       padding: 10px; cursor: pointer; transition: all 0.2s;
     }
-    .reset-btn:hover { border-color: var(--label); color: var(--label); }
+    .reset-btn:hover { border-color: var(--gold-deep); color: var(--label); }
 
-    /* ── CONS CALCULATOR ── */
+    /* ── CALC ── */
     .field { margin-bottom: 18px; }
-    .field:last-child { margin-bottom: 0; }
-
-    .field-label {
-      display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
-    }
-    .label-text {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--label);
-    }
+    .field-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .label-text { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--label); }
 
     .input-wrap { position: relative; }
     .prefix {
@@ -275,7 +266,6 @@
       font-family: 'JetBrains Mono', monospace; font-size: 12px;
       color: var(--muted); pointer-events: none; user-select: none;
     }
-
     input[type="number"] {
       width: 100%; background: var(--surface); border: 1px solid var(--border);
       border-radius: 8px; color: var(--text);
@@ -287,8 +277,8 @@
     input[type="number"]::-webkit-outer-spin-button,
     input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
     input[type="number"]:focus {
-      border-color: rgba(0,229,160,0.5); background: #131820;
-      box-shadow: 0 0 0 3px rgba(0,229,160,0.07);
+      border-color: rgba(212,175,55,0.55); background: #14120c;
+      box-shadow: 0 0 0 3px rgba(212,175,55,0.09);
     }
     input[type="number"]::placeholder { color: var(--muted); font-weight: 400; }
 
@@ -296,96 +286,80 @@
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 8px; padding: 11px 16px; margin-bottom: 18px;
       font-family: 'JetBrains Mono', monospace; font-size: 11px;
-      color: var(--muted); text-align: center; letter-spacing: 0.04em; line-height: 1.7;
+      color: var(--muted); text-align: center; letter-spacing: 0.04em; line-height: 1.75;
     }
-    .formula strong { color: var(--label); font-weight: 600; }
+    .formula strong { color: var(--gold); font-weight: 600; }
 
-    /* Cons result */
     .result-box {
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 10px; padding: 20px 18px;
       display: flex; align-items: center; gap: 14px;
       opacity: 0.4; transition: opacity 0.4s, border-color 0.4s, box-shadow 0.4s;
     }
-    .result-box.active {
-      opacity: 1; border-color: rgba(0,229,160,0.3);
-      animation: pulse-glow 3s ease-in-out infinite;
-    }
+    .result-box.active { opacity: 1; border-color: rgba(212,175,55,0.35); animation: pulse-glow 3.4s ease-in-out infinite; }
     .result-icon {
-      width: 42px; height: 42px; border-radius: 8px;
-      background: rgba(0,229,160,0.08); border: 1px solid rgba(0,229,160,0.15);
+      width: 44px; height: 44px; border-radius: 9px;
+      background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.2);
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; font-size: 18px;
     }
     .result-info { flex: 1; }
-    .result-label {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.15em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
-    }
+    .result-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
     .result-value {
-      font-family: 'JetBrains Mono', monospace; font-size: 30px;
-      font-weight: 600; color: var(--accent); letter-spacing: -0.02em; line-height: 1;
+      font-family: 'JetBrains Mono', monospace; font-size: 30px; font-weight: 600;
+      letter-spacing: -0.02em; line-height: 1.1; color: var(--gold-bright);
     }
-    .result-unit { font-size: 11px; color: var(--muted); margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
+    .result-value .unit-tag {
+      font-size: 13px; font-weight: 400; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--label); margin-left: 8px;
+    }
+    .result-unit { font-size: 11px; color: var(--muted); margin-top: 5px; font-family: 'JetBrains Mono', monospace; }
 
     .breakdown { margin-top: 14px; display: none; gap: 8px; grid-template-columns: 1fr 1fr; }
     .breakdown.visible { display: grid; }
-    .breakdown-item {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 8px; padding: 10px 12px; text-align: center;
-    }
-    .breakdown-label {
-      font-size: 9px; font-weight: 700; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 5px;
-    }
-    .breakdown-val {
-      font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; color: var(--text);
-    }
-    .breakdown-val.green { color: var(--accent); }
-    .breakdown-val.blue  { color: var(--accent2); }
+    .breakdown-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; text-align: center; }
+    .breakdown-label { font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+    .breakdown-val { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; color: var(--text); }
+    .breakdown-val.gold { color: var(--gold); }
+    .breakdown-val.bright { color: var(--gold-bright); }
 
-    /* ── TIER TABLE ── */
-    .tier-table-wrap {
-      overflow-x: auto; border-radius: 8px; border: 1px solid var(--border);
-    }
-    table {
-      width: 100%; border-collapse: collapse;
-      font-family: 'JetBrains Mono', monospace; font-size: 11px;
-    }
-    thead tr { background: #0e1117; border-bottom: 1px solid rgba(0,229,160,0.2); }
+    /* ── TABLE ── */
+    .tier-table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+    thead tr { background: #0b0a07; border-bottom: 1px solid rgba(212,175,55,0.28); }
     th {
       padding: 10px 12px; text-align: right;
       font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
-      color: var(--accent); font-weight: 600; white-space: nowrap;
+      color: var(--gold); font-weight: 600; white-space: nowrap;
     }
     th:first-child { text-align: left; }
     tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
     tbody tr:last-child { border-bottom: none; }
-    tbody tr:hover { background: rgba(255,255,255,0.02); }
-    tbody tr.row-main { background: rgba(22,27,34,0.6); }
-    tbody tr.row-sub  { background: rgba(17,19,24,0.5); }
-    tbody tr.row-active { background: rgba(0,229,160,0.06) !important; }
-    tbody tr.row-active td { color: var(--accent); }
-    td { padding: 9px 12px; text-align: right; white-space: nowrap; color: var(--label); }
+    tbody tr:hover { background: rgba(212,175,55,0.03); }
+    tbody tr.row-active { background: rgba(212,175,55,0.08) !important; }
+    tbody tr.row-active td { color: var(--gold-bright); }
+    td { padding: 10px 12px; text-align: right; white-space: nowrap; color: var(--label); }
     td:first-child { text-align: left; }
     .t-label { font-weight: 600; color: var(--text); font-size: 12px; }
     .t-risk  { color: var(--red); }
-    .t-tp    { color: var(--accent); }
+    .t-tp    { color: var(--gold); }
     .t-sl    { color: var(--muted); font-size: 10px; }
-    .t-cons  { color: var(--accent2); }
+    .t-cons  { color: var(--gold-bright); }
     .t-cons.empty { color: var(--muted); }
     .active-arrow {
       display: inline-block; width: 6px; height: 6px; border-radius: 50%;
-      background: var(--accent); box-shadow: 0 0 6px var(--accent); margin-right: 6px;
+      background: var(--gold-bright); box-shadow: 0 0 7px var(--gold); margin-right: 6px;
       vertical-align: middle;
     }
 
     /* ── HISTORY ── */
     .history-list {
       display: flex; flex-direction: column; gap: 5px;
-      max-height: 200px; overflow-y: auto;
+      max-height: 220px; overflow-y: auto;
       scrollbar-width: thin; scrollbar-color: var(--border) transparent;
     }
+    .history-list::-webkit-scrollbar { width: 5px; }
+    .history-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
     .history-list:empty::after {
       content: 'No trades yet';
       font-family: 'JetBrains Mono', monospace; font-size: 11px;
@@ -399,30 +373,25 @@
       font-family: 'JetBrains Mono', monospace; font-size: 11px;
       animation: fadeUp 0.2s ease both;
     }
-    .history-entry .h-idx  { color: var(--muted); font-size: 9px; }
-    .history-entry .h-act  { font-weight: 600; font-size: 12px; }
-    .history-entry.tp .h-act { color: var(--accent); }
+    .history-entry.tp { border-left: 2px solid var(--gold); }
+    .history-entry.sl { border-left: 2px solid var(--red); }
+    .history-entry .h-idx { color: var(--muted); font-size: 9px; }
+    .history-entry .h-act { font-weight: 600; font-size: 12px; }
+    .history-entry.tp .h-act { color: var(--gold-bright); }
     .history-entry.sl .h-act { color: var(--red); }
     .history-entry .h-info { color: var(--label); font-size: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .history-entry .h-amt  { color: var(--muted); font-size: 10px; text-align: right; }
+    .history-entry .h-amt { color: var(--muted); font-size: 10px; text-align: right; }
 
-    /* ── FLASH ANIMATIONS ── */
+    /* ── ANIM ── */
     @keyframes pulse-glow {
-      0%,100% { box-shadow: 0 0 24px rgba(0,229,160,0.06); }
-      50%      { box-shadow: 0 0 36px rgba(0,229,160,0.14); }
+      0%,100% { box-shadow: 0 0 26px rgba(212,175,55,0.07); }
+      50%     { box-shadow: 0 0 40px rgba(212,175,55,0.18); }
     }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes flash-green {
-      0% { background: rgba(0,229,160,0.18); } 100% { background: var(--surface); }
-    }
-    @keyframes flash-red {
-      0% { background: rgba(255,77,106,0.16); } 100% { background: var(--surface); }
-    }
-    .do-flash-tp { animation: flash-green 0.5s ease forwards; }
-    .do-flash-sl { animation: flash-red   0.5s ease forwards; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes flash-gold { 0% { background: rgba(212,175,55,0.22); } 100% { background: var(--surface); } }
+    @keyframes flash-red  { 0% { background: rgba(224,72,77,0.18); } 100% { background: var(--surface); } }
+    .do-flash-tp { animation: flash-gold 0.55s ease forwards; }
+    .do-flash-sl { animation: flash-red 0.55s ease forwards; }
 
     .footer {
       margin-top: 24px; text-align: center; font-size: 11px; color: var(--muted);
@@ -433,43 +402,37 @@
 <body>
 <div class="wrapper">
 
-  <!-- HEADER -->
   <div class="header">
     <div class="tag">Tiered Risk System</div>
-    <h1>TIER<span>CALC</span></h1>
-    <div class="subtitle">Tier tracker · Cons calculator · RR 2.4</div>
+    <h1>TIERCALC</h1>
+    <div class="subtitle">Tier tracker · Cons calculator · RR 2.4 · Max Tier 4</div>
   </div>
 
-  <!-- ═══ CARD 1: TIER TRACKER ═══ -->
+  <!-- CARD 1 -->
   <div class="card">
-
-    <!-- Big tier -->
     <div class="tier-display" id="tierDisplay">
       <div class="tier-display-label">Current Tier</div>
       <div class="tier-display-value" id="tierVal">1</div>
-      <div class="tier-display-sub" id="tierSub">1 TP to reach Tier 1.1</div>
+      <div class="tier-display-sub" id="tierSub">1 TP to reach Tier 2</div>
+      <div class="tier-pips" id="tierPips"></div>
     </div>
 
-    <!-- Progress -->
     <div class="tp-progress">
       <div class="tp-progress-header">
-        <span class="tp-progress-label">TP Progress to next tier</span>
-        <span class="tp-progress-val" id="progressLabel">0 / 1</span>
+        <span class="tp-progress-label">Ladder Position</span>
+        <span class="tp-progress-val" id="progressLabel">1 / 4</span>
       </div>
-      <div class="progress-track">
-        <div class="progress-fill" id="progressFill" style="width:0%"></div>
-      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:25%"></div></div>
     </div>
 
-    <!-- Stats -->
     <div class="stats-grid">
       <div class="stat-item">
         <div class="stat-label">Current Risk</div>
-        <div class="stat-value green" id="statRisk">$100.00</div>
+        <div class="stat-value red" id="statRisk">$100.00</div>
       </div>
       <div class="stat-item">
         <div class="stat-label">TP Value</div>
-        <div class="stat-value blue" id="statTP">$240.00</div>
+        <div class="stat-value bright" id="statTP">$240.00</div>
       </div>
       <div class="stat-item">
         <div class="stat-label">Net P&amp;L</div>
@@ -479,14 +442,11 @@
         <div class="stat-label">Trades (W / L)</div>
         <div class="stat-value" id="statTrades">0 / 0</div>
       </div>
-      <!-- Win Rate — full width -->
       <div class="stat-item wide">
         <div class="stat-inner">
           <div class="stat-label">Win Rate</div>
-          <div class="stat-value green" id="statWR">—</div>
-          <div class="wr-bar-wrap">
-            <div class="wr-track"><div class="wr-fill" id="wrFill" style="width:0%"></div></div>
-          </div>
+          <div class="stat-value gold" id="statWR">—</div>
+          <div class="wr-bar-wrap"><div class="wr-track"><div class="wr-fill" id="wrFill" style="width:0%"></div></div></div>
         </div>
         <div class="stat-inner">
           <div class="stat-label">Total Trades</div>
@@ -495,7 +455,6 @@
       </div>
     </div>
 
-    <!-- Last action -->
     <div class="last-action" id="lastAction">
       <div class="la-dot"></div>
       <span class="la-text">No trades yet — press TP or SL to begin</span>
@@ -503,46 +462,43 @@
 
     <div class="divider"><span>Trade Actions</span></div>
 
-    <!-- TP / SL buttons -->
     <div class="action-grid">
       <button class="action-btn btn-tp" onclick="doTP()">
         <span class="btn-icon">✓</span>
         <span>Take Profit</span>
-        <span class="btn-sub">+1 tier advance</span>
+        <span class="btn-sub">+1 tier · caps at 4</span>
       </button>
       <button class="action-btn btn-sl" onclick="doSL()">
         <span class="btn-icon">✕</span>
         <span>Stop Loss</span>
-        <span class="btn-sub">drop to prev whole tier</span>
+        <span class="btn-sub">drop 1 tier</span>
       </button>
     </div>
     <button class="reset-btn" onclick="resetAll()">↺ &nbsp; Reset Cycle</button>
   </div>
 
-  <!-- ═══ CARD 2: CONS CALCULATOR ═══ -->
+  <!-- CARD 2 -->
   <div class="card">
     <div class="sec-label">Cons Calculator</div>
 
     <div class="formula">
-      <strong>Cons</strong> = Current Risk ÷ SL Pip &nbsp;·&nbsp; <strong>TP Pip</strong> = SL Pip × 2.4<br/>
-      <span style="color:var(--muted);font-size:10px;">Risk auto-synced from current tier</span>
+      <strong>Cons</strong> = Current Risk ÷ SL Pip<br/>
+      &lt; 10 → <strong>mini con</strong> &nbsp;·&nbsp; ≥ 10 → ÷10 = <strong>con</strong><br/>
+      <span style="font-size:10px;">Risk auto-synced from current tier · TP Pip = SL × 2.4</span>
     </div>
 
     <div class="field">
-      <div class="field-label">
-        <span class="label-text">SL Pip Value</span>
-      </div>
+      <div class="field-label"><span class="label-text">SL Pip Value</span></div>
       <div class="input-wrap">
         <span class="prefix">pip</span>
         <input type="number" id="slPip" placeholder="0.0" min="0" step="0.1" oninput="calcCons()" />
       </div>
     </div>
 
-    <!-- Cons result -->
     <div class="result-box" id="resultBox">
       <div class="result-icon">📊</div>
       <div class="result-info">
-        <div class="result-label">Contracts (Cons)</div>
+        <div class="result-label">Position Size</div>
         <div class="result-value" id="resultValue">—</div>
         <div class="result-unit" id="resultUnit">Enter SL pip value above</div>
       </div>
@@ -551,15 +507,15 @@
     <div class="breakdown visible" id="breakdown">
       <div class="breakdown-item">
         <div class="breakdown-label">Risk</div>
-        <div class="breakdown-val green" id="bdRisk">$100.00</div>
+        <div class="breakdown-val" style="color:var(--red)" id="bdRisk">$100.00</div>
       </div>
       <div class="breakdown-item">
         <div class="breakdown-label">SL Pip</div>
-        <div class="breakdown-val blue" id="bdSL">—</div>
+        <div class="breakdown-val bright" id="bdSL">—</div>
       </div>
       <div class="breakdown-item">
         <div class="breakdown-label">TP Pip</div>
-        <div class="breakdown-val" style="color:var(--gold)" id="bdTPPip">—</div>
+        <div class="breakdown-val gold" id="bdTPPip">—</div>
       </div>
       <div class="breakdown-item">
         <div class="breakdown-label">TP Target ($)</div>
@@ -568,7 +524,7 @@
     </div>
   </div>
 
-  <!-- ═══ CARD 3: TIER TABLE ═══ -->
+  <!-- CARD 3 -->
   <div class="card">
     <div class="sec-label">Tier Reference Table</div>
     <div class="tier-table-wrap">
@@ -585,12 +541,12 @@
         <tbody id="tierTableBody"></tbody>
       </table>
     </div>
-    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:10px;letter-spacing:0.03em;">
-      * Cons calculated from current SL pip input. — if no pip entered.
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:10px;letter-spacing:0.03em;line-height:1.6;">
+      * Cons from current SL pip input. <span style="color:var(--gold-deep)">mc</span> = mini con · <span style="color:var(--gold-deep)">c</span> = con
     </div>
   </div>
 
-  <!-- ═══ CARD 4: HISTORY ═══ -->
+  <!-- CARD 4 -->
   <div class="card">
     <div class="sec-label">Trade History</div>
     <div class="history-list" id="historyList"></div>
@@ -601,80 +557,73 @@
 
 <script>
   const RR = 2.4;
+  const MAX_TIER = 4;
 
-  // Build tier list: 1, 2, 3, ... 10
   function buildTiers() {
     const list = [];
     let risk = 100;
-    for (let n = 1; n <= 10; n++) {
+    for (let n = 1; n <= MAX_TIER; n++) {
       const tp = parseFloat((risk * RR).toFixed(2));
-      list.push({ label: `${n}`, whole: n, isSub: false, risk, tp });
+      list.push({ label: `${n}`, whole: n, risk, tp });
       risk = tp;
     }
     return list;
   }
-
   const TIERS = buildTiers();
 
-  // SL drop: drops to previous tier
-  function slDropIdx(idx) {
-    if (idx <= 0) return 0;
-    return idx - 1;
-  }
+  function slDropIdx(idx) { return idx <= 0 ? 0 : idx - 1; }
 
-  const SAVE_KEY = 'tiercalc_state';
-
-  function saveState() {
-    try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); } catch(e) {}
-  }
-
+  const SAVE_KEY = 'tiercalc_state_gold';
+  function saveState() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); } catch(e) {} }
   function loadState() {
     try {
       const raw = localStorage.getItem(SAVE_KEY);
-      if (raw) return JSON.parse(raw);
+      if (raw) {
+        const s = JSON.parse(raw);
+        if (s.tierIdx > TIERS.length - 1) s.tierIdx = TIERS.length - 1;
+        return s;
+      }
     } catch(e) {}
     return null;
   }
 
-  let state = loadState() || {
-    tierIdx: 0,
-    totalTP: 0,
-    totalSL: 0,
-    wins: 0,
-    losses: 0,
-    history: [],
-  };
+  let state = loadState() || { tierIdx: 0, totalTP: 0, totalSL: 0, wins: 0, losses: 0, history: [] };
 
   function currentTier() { return TIERS[state.tierIdx]; }
+
+  /* ── CONS LOGIC ──
+     raw = risk / slPip
+     raw < 10  → raw "mini con"
+     raw >= 10 → raw/10 "con"
+  */
+  function consFor(risk, pip) {
+    const raw = risk / pip;
+    if (raw < 10) return { value: raw, unit: 'mini con', short: 'mc' };
+    return { value: raw / 10, unit: 'con', short: 'c' };
+  }
+  function trimNum(n) {
+    return parseFloat(n.toFixed(2)).toString();
+  }
 
   function doTP() {
     const t = currentTier();
     state.wins++;
     state.totalTP = parseFloat((state.totalTP + t.tp).toFixed(2));
-
     const prevLabel = t.label;
-    // Advance 1 step
-    if (state.tierIdx < TIERS.length - 1) state.tierIdx++;
-    const nextLabel = currentTier().label;
-
-    state.history.unshift({ type:'TP', from: prevLabel, to: nextLabel, risk: t.risk, tp: t.tp });
-    saveState();
-    render('tp');
+    if (state.tierIdx < TIERS.length - 1) state.tierIdx++;   // caps at Tier 4
+    state.history.unshift({ type:'TP', from: prevLabel, to: currentTier().label, risk: t.risk, tp: t.tp });
+    saveState(); render('tp');
   }
 
   function doSL() {
     const t = currentTier();
     state.losses++;
-    state.totalSL  = parseFloat((state.totalSL  + t.risk).toFixed(2));
-    state.totalTP  = parseFloat((state.totalTP  - t.risk).toFixed(2));
-
+    state.totalSL = parseFloat((state.totalSL + t.risk).toFixed(2));
+    state.totalTP = parseFloat((state.totalTP - t.risk).toFixed(2));
     const prevLabel = t.label;
     state.tierIdx = slDropIdx(state.tierIdx);
-    const nextLabel = currentTier().label;
-
-    state.history.unshift({ type:'SL', from: prevLabel, to: nextLabel, risk: t.risk });
-    saveState();
-    render('sl');
+    state.history.unshift({ type:'SL', from: prevLabel, to: currentTier().label, risk: t.risk });
+    saveState(); render('sl');
   }
 
   function resetAll() {
@@ -684,113 +633,110 @@
     render('reset');
   }
 
-  function fmt(n, decimals=2) {
-    return n.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
-  }
+  function fmt(n, d=2) { return n.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }); }
 
   function calcCons() {
-    const t   = currentTier();
+    const t = currentTier();
     const pip = parseFloat(document.getElementById('slPip').value);
     const box = document.getElementById('resultBox');
-    const valEl  = document.getElementById('resultValue');
+    const valEl = document.getElementById('resultValue');
     const unitEl = document.getElementById('resultUnit');
-    const bdSL    = document.getElementById('bdSL');
+    const bdSL = document.getElementById('bdSL');
     const bdTPPip = document.getElementById('bdTPPip');
 
     if (!isNaN(pip) && pip > 0) {
-      const cons  = t.risk / pip;
+      const c = consFor(t.risk, pip);
       const tpPip = parseFloat((pip * RR).toFixed(2));
       box.classList.add('active');
-      valEl.textContent    = cons.toFixed(2);
-      unitEl.textContent   = `contracts  ·  Risk $${fmt(t.risk)}  ÷  ${pip} pip`;
-      bdSL.textContent     = pip.toFixed(1) + ' pip';
-      bdTPPip.textContent  = tpPip.toFixed(1) + ' pip';
+      valEl.innerHTML = `${trimNum(c.value)}<span class="unit-tag">${c.unit}</span>`;
+      unitEl.textContent = `Risk $${fmt(t.risk)} ÷ ${pip} pip = ${trimNum(t.risk/pip)} raw`;
+      bdSL.textContent = pip.toFixed(1) + ' pip';
+      bdTPPip.textContent = tpPip.toFixed(1) + ' pip';
     } else {
       box.classList.remove('active');
-      valEl.textContent    = '—';
-      unitEl.textContent   = 'Enter SL pip value above';
-      bdSL.textContent     = '—';
-      bdTPPip.textContent  = '—';
+      valEl.textContent = '—';
+      unitEl.textContent = 'Enter SL pip value above';
+      bdSL.textContent = '—';
+      bdTPPip.textContent = '—';
     }
-    renderTable(); // refresh cons column
+    renderTable();
   }
 
   function render(flash) {
     const t = currentTier();
     const atMax = state.tierIdx >= TIERS.length - 1;
 
-    // Tier display
     document.getElementById('tierVal').textContent = t.label;
+    document.getElementById('tierDisplay').classList.toggle('maxed', atMax);
+    document.getElementById('tierSub').textContent = atMax
+      ? '🏆 Max tier — TP holds at Tier 4'
+      : `1 TP to reach Tier ${TIERS[state.tierIdx + 1].label}`;
 
-    let subText;
-    if (atMax) {
-      subText = '🏆 Maximum tier reached!';
-    } else {
-      const next = TIERS[state.tierIdx + 1];
-      subText = `1 TP to reach Tier ${next.label}`;
-    }
-    document.getElementById('tierSub').textContent = subText;
+    // Pips
+    const pipsEl = document.getElementById('tierPips');
+    pipsEl.innerHTML = '';
+    TIERS.forEach((_, i) => {
+      const d = document.createElement('div');
+      d.className = 'pip-dot' + (i <= state.tierIdx ? ' filled' : '');
+      pipsEl.appendChild(d);
+    });
 
-    // Progress (always 0 or 1 needed, so fill = 0 unless just about to advance)
-    document.getElementById('progressFill').style.width = '0%';
-    document.getElementById('progressLabel').textContent = '0 / 1';
+    const pct = ((state.tierIdx + 1) / TIERS.length) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = `${state.tierIdx + 1} / ${TIERS.length}`;
 
-    // Stats
-    document.getElementById('statRisk').textContent    = '$' + fmt(t.risk);
-    document.getElementById('statTP').textContent      = '$' + fmt(t.tp);
-    const netPL  = state.totalTP;
-    const plEl   = document.getElementById('statTotalTP');
+    document.getElementById('statRisk').textContent = '$' + fmt(t.risk);
+    document.getElementById('statTP').textContent = '$' + fmt(t.tp);
+
+    const netPL = state.totalTP;
+    const plEl = document.getElementById('statTotalTP');
     plEl.textContent = (netPL >= 0 ? '+$' : '-$') + fmt(Math.abs(netPL));
     plEl.className = 'stat-value ' + (netPL >= 0 ? 'gold' : 'red');
-    const totalTrades = state.wins + state.losses;
-    document.getElementById('statTrades').textContent  = `${state.wins} / ${state.losses}`;
-    document.getElementById('statTotal').textContent   = totalTrades;
 
-    // Win rate
-    const wrEl   = document.getElementById('statWR');
+    const totalTrades = state.wins + state.losses;
+    document.getElementById('statTrades').textContent = `${state.wins} / ${state.losses}`;
+    document.getElementById('statTotal').textContent = totalTrades;
+
+    const wrEl = document.getElementById('statWR');
     const wrFill = document.getElementById('wrFill');
     if (totalTrades === 0) {
-      wrEl.textContent = '—';
-      wrEl.className   = 'stat-value green';
-      wrFill.style.width = '0%';
+      wrEl.textContent = '—'; wrEl.className = 'stat-value gold'; wrFill.style.width = '0%';
     } else {
       const wr = (state.wins / totalTrades) * 100;
       wrEl.textContent = wr.toFixed(1) + '%';
-      wrEl.className   = 'stat-value ' + (wr >= 50 ? 'green' : 'red');
+      wrEl.className = 'stat-value ' + (wr >= 50 ? 'gold' : 'red');
       wrFill.style.width = wr + '%';
       wrFill.style.background = wr >= 50
-        ? 'linear-gradient(90deg, rgba(0,229,160,0.5), var(--accent))'
-        : 'linear-gradient(90deg, rgba(255,77,106,0.5), var(--red))';
+        ? 'linear-gradient(90deg, var(--gold-deep), var(--gold-bright))'
+        : 'linear-gradient(90deg, rgba(224,72,77,0.5), var(--red))';
     }
 
-    // Breakdown sync
     document.getElementById('bdRisk').textContent = '$' + fmt(t.risk);
-    document.getElementById('bdTP').textContent   = '$' + fmt(t.tp);
+    document.getElementById('bdTP').textContent = '$' + fmt(t.tp);
 
-    // Last action
     const la = document.getElementById('lastAction');
     la.className = 'last-action';
     if (state.history.length > 0) {
       const last = state.history[0];
       if (last.type === 'TP') {
         la.className = 'last-action is-tp';
-        la.innerHTML = `<div class="la-dot"></div><span class="la-text">TP at Tier ${last.from} · +$${fmt(last.tp)} → now Tier ${last.to}</span>`;
+        const held = last.from === last.to;
+        la.innerHTML = `<div class="la-dot"></div><span class="la-text">TP at Tier ${last.from} · +$${fmt(last.tp)} → ${held ? 'held at Tier ' + last.to + ' (max)' : 'now Tier ' + last.to}</span>`;
       } else {
         la.className = 'last-action is-sl';
-        la.innerHTML = `<div class="la-dot"></div><span class="la-text">SL at Tier ${last.from} · -$${fmt(last.risk)} → dropped to Tier ${last.to}</span>`;
+        const held = last.from === last.to;
+        la.innerHTML = `<div class="la-dot"></div><span class="la-text">SL at Tier ${last.from} · -$${fmt(last.risk)} → ${held ? 'stays at Tier ' + last.to : 'dropped to Tier ' + last.to}</span>`;
       }
     } else {
       la.innerHTML = `<div class="la-dot"></div><span class="la-text">No trades yet — press TP or SL to begin</span>`;
     }
 
-    // Flash on tier display
     const td = document.getElementById('tierDisplay');
     td.classList.remove('do-flash-tp','do-flash-sl');
     void td.offsetWidth;
     if (flash === 'tp') td.classList.add('do-flash-tp');
     if (flash === 'sl') td.classList.add('do-flash-sl');
 
-    // Recalc cons with current tier
     calcCons();
     renderHistory();
   }
@@ -803,18 +749,14 @@
 
     TIERS.forEach((t, i) => {
       const tr = document.createElement('tr');
-      tr.className = (t.isSub ? 'row-sub' : 'row-main') + (i === state.tierIdx ? ' row-active' : '');
+      tr.className = i === state.tierIdx ? 'row-active' : '';
+      const slLabel = (i === 0) ? '—' : `Tier ${TIERS[slDropIdx(i)].label}`;
 
-      // SL drop label
-      const slIdx = slDropIdx(i);
-      const slLabel = (i === 0) ? '—' : `Tier ${TIERS[slIdx].label}`;
-
-      // Cons
       let consStr = '—';
       if (hasPip) {
-        consStr = (t.risk / pip).toFixed(2);
+        const c = consFor(t.risk, pip);
+        consStr = `${trimNum(c.value)} ${c.short}`;
       }
-
       const isActive = i === state.tierIdx;
       tr.innerHTML = `
         <td class="t-label">${isActive ? '<span class="active-arrow"></span>' : ''}${t.label}</td>
@@ -834,9 +776,7 @@
       const div = document.createElement('div');
       div.className = 'history-entry ' + e.type.toLowerCase();
       const num = state.history.length - i;
-      const amt = e.type === 'TP'
-        ? `+$${fmt(e.tp)}`
-        : `-$${fmt(e.risk)}`;
+      const amt = e.type === 'TP' ? `+$${fmt(e.tp)}` : `-$${fmt(e.risk)}`;
       div.innerHTML = `
         <span class="h-idx">#${num}</span>
         <span class="h-act">${e.type}</span>
@@ -847,7 +787,6 @@
     });
   }
 
-  // Init
   render('reset');
 </script>
 </body>
